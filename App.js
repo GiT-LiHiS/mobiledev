@@ -3,30 +3,43 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput,FlatList} from 'react-native';
 
 export default function App() {
-    const [text1, setText1] = useState('');
-    const [text2, setText2] = useState('');
+    const [number, setNumber] = useState(6);
     const [answer, setAnswer] = useState('');
-    const [data, setData] = useState([]);
+    const [text, setText] = useState('Guess a number between 1-100');
+    const [count, setCount] = useState(0);
+
+
+    const buttonPressed = () => {
+
+        if (answer < number) {
+            setText('Your guess ' + answer + ' was too low')
+            setCount(count + 1)
+        }
+
+
+        if (answer > number) {
+            setText('Your guess ' + answer + ' was too high')
+            setCount(count + 1)
+        }
+
+        if (answer == number) {
+
+            Alert.alert('Correct answer in '+ count + ' tries' )
+
+        }
+                        
+
+    }
+
 
  
   return (
-    <View style={styles.container}>
-          <Text>RESULT: {answer}</Text>
-          <StatusBar style="auto" />
-          <TextInput keyboardType='number-pad' style={{ width: 200, borderColor: 'gray', borderWidth: 1 }} onChangeText={text1 => setText1(text1)} value={text1} />
-          <TextInput keyboardType='number-pad' style={{ width: 200, borderColor: 'gray', borderWidth: 1 }} onChangeText={text2 => setText2(text2)} value={text2} />
-          <View style={{ flex: 0, flexDirection: 'row', allignItems: 'Center', justifyContent: 'space-around' }}>
-              <Button onPress={answer => setAnswer(parseInt(text1) + parseInt(text2))} title="+" />
-              <Button onPress={answer => setAnswer(parseInt(text1) - parseInt(text2))} title="-" />           
-          </View>   
-          <View style={{ flex: 0, flexDirection: 'row', allignItems: 'Center', justifyContent: 'space-around' }}>
-              <FlatList
-                  data={data}
-                  renderItem={({ item }) =>
-                      <Text>{item.key}</Text>}
-              />
-          </View>   
-          
+      <View style={styles.container}>
+          <Text>{text}</Text>
+          <TextInput style={{ width: 200, borderColor: 'gray', borderWidth: 1 }}
+              onChangeText={answer => setAnswer(answer)}
+              value={answer} />
+          <Button onPress={buttonPressed}title="Make Guess"/>
           
     </View>
   );
