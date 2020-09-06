@@ -1,47 +1,51 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, Alert, TextInput,FlatList} from 'react-native';
+import { version } from 'react-dom';
 
 export default function App() {
-    const [number, setNumber] = useState(6);
-    const [answer, setAnswer] = useState('');
-    const [text, setText] = useState('Guess a number between 1-100');
-    const [count, setCount] = useState(0);
+    
+    const [text, setText] = useState('');
+    const [data, setData] = useState([]);
+  
 
 
-    const buttonPressed = () => {
-
-        if (answer < number) {
-            setText('Your guess ' + answer + ' was too low')
-            setCount(count + 1)
-        }
-
-
-        if (answer > number) {
-            setText('Your guess ' + answer + ' was too high')
-            setCount(count + 1)
-        }
-
-        if (answer == number) {
-
-            Alert.alert('Correct answer in '+ count + ' tries' )
-
-        }
+    const buttonAdd = () => {
+        setData([...data, { key: text }]);
                         
 
     }
+    const buttonClear = () => {
+        setData([]);
 
+
+    }
 
  
   return (
-      <View style={styles.container}>
-          <Text>{text}</Text>
+      <View style={{
+          flex: 1, flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'space-around', marginTop: 500
+      }}>
           <TextInput style={{ width: 200, borderColor: 'gray', borderWidth: 1 }}
-              onChangeText={answer => setAnswer(answer)}
-              value={answer} />
-          <Button onPress={buttonPressed}title="Make Guess"/>
-          
-    </View>
+              onChangeText={text => setText(text)}
+              value={text} />
+          <View style={{
+              flex: 0, flexDirection: 'row', alignItems: 'center',
+              justifyContent: 'space-around'
+          }}>
+          <Button onPress={buttonAdd} title="ADD" />
+              <Button onPress={buttonClear} title="CLEAR" />
+              </View>
+          <View style={{
+              flex: 1, flexDirection: 'column', alignItems: 'center',
+              justifyContent: 'space-around'
+          }}>
+              <Text style={{Color:'blue'}}>SHOPPING LIST</Text>
+                <FlatList data  ={data}renderItem={({ item }) => <Text  >{item.key}</Text >}/>
+           </View>
+      </View>
+    
   );
 }
 
